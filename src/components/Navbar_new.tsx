@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { useUser } from "@/context/UserContext";
 import { supabase } from "@/lib/supabase";
@@ -62,7 +63,7 @@ export default function Navbar() {
                   <div className="flex-shrink-0">
                     {user.user_metadata?.avatar_url ||
                     user.user_metadata?.picture ? (
-                      <img
+                      <Image
                         className="h-8 w-8 rounded-full object-cover border-2 border-gray-200"
                         src={
                           user.user_metadata.avatar_url ||
@@ -73,6 +74,8 @@ export default function Navbar() {
                           user.user_metadata?.name ||
                           "User"
                         }
+                        width={32}
+                        height={32}
                       />
                     ) : (
                       <div className="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center text-white text-sm font-medium">

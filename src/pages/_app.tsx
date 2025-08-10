@@ -4,13 +4,14 @@ import { UserProvider } from "@/context/UserContext";
 import Navbar from "@/components/Navbar_new";
 import { NotificationContainer } from "@/components/Notification";
 import { useNotification } from "@/hooks/useNotification";
+import { NextComponentType, NextPageContext } from "next";
 
 function AppContent({
   Component,
   pageProps,
 }: {
-  Component: any;
-  pageProps: any;
+  Component: NextComponentType<NextPageContext>;
+  pageProps: Record<string, unknown>;
 }) {
   const { notifications, removeNotification } = useNotification();
 

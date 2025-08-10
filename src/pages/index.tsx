@@ -1,12 +1,10 @@
 // pages/index.tsx
-import { useUser } from "@/context/UserContext";
 import { useState } from "react";
 import IngredientInput from "@/components/IngredientInput";
 import RecipeDisplay from "@/components/RecipeDisplay";
 import { RecipeResponse } from "@/lib/gemini";
 
 export default function Home() {
-  const { user } = useUser();
   const [currentRecipe, setCurrentRecipe] = useState<RecipeResponse | null>(
     null
   );

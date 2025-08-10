@@ -1,14 +1,25 @@
 import { useState, useCallback } from "react";
 
+interface Notification {
+  id: string;
+  message: string;
+  type: "success" | "error" | "info" | "warning";
+  duration: number;
+}
+
 let notificationId = 0;
 
 export const useNotification = () => {
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
 
   const addNotification = useCallback(
-    (message, type = "info", duration = 5000) => {
+    (
+      message: string,
+      type: "success" | "error" | "info" | "warning" = "info",
+      duration = 5000
+    ) => {
       const id = (++notificationId).toString();
-      const notification = { id, message, type, duration };
+      const notification: Notification = { id, message, type, duration };
 
       setNotifications((prev) => [...prev, notification]);
 
@@ -17,35 +28,35 @@ export const useNotification = () => {
     []
   );
 
-  const removeNotification = useCallback((id) => {
+  const removeNotification = useCallback((id: string) => {
     setNotifications((prev) =>
       prev.filter((notification) => notification.id !== id)
     );
   }, []);
 
   const showSuccess = useCallback(
-    (message) => {
+    (message: string) => {
       return addNotification(message, "success");
     },
     [addNotification]
   );
 
   const showError = useCallback(
-    (message) => {
+    (message: string) => {
       return addNotification(message, "error");
     },
     [addNotification]
   );
 
   const showWarning = useCallback(
-    (message) => {
+    (message: string) => {
       return addNotification(message, "warning");
     },
     [addNotification]
   );
 
   const showInfo = useCallback(
-    (message) => {
+    (message: string) => {
       return addNotification(message, "info");
     },
     [addNotification]
