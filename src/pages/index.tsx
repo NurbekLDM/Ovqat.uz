@@ -29,8 +29,8 @@ export default function Home() {
               🍽️ Ovqat.uz - AI Oshpaz
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Sizning ingredientlaringiz asosida o'zbek milliy taomlarining eng
-              mazali retseptlarini AI yordamida tayyorlaymiz!
+              Sizning ingredientlaringiz asosida o&apos;zbek milliy taomlarining
+              eng mazali retseptlarini AI yordamida tayyorlaymiz!
             </p>
           </div>
 
@@ -42,7 +42,7 @@ export default function Home() {
 
           <div className="mt-8 text-center">
             <p className="text-gray-500 text-sm">
-              AI yordamida o'zbek milliy taomlarini kashf eting
+              AI yordamida o&apos;zbek milliy taomlarini kashf eting
             </p>
           </div>
         </div>

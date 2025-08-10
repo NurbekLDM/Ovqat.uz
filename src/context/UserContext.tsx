@@ -1,8 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { User } from "@supabase/supabase-js";
 
 type UserContextType = {
-  user: any;
+  user: User | null;
   loading: boolean;
 };
 
@@ -12,7 +13,7 @@ export const UserContext = createContext<UserContextType>({
 });
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
