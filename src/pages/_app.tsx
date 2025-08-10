@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { UserProvider } from "@/context/UserContext";
-import Navbar from "@/components/Navbar_new";
+import Navbar from "@/components/Navbar";
 import { NotificationContainer } from "@/components/Notification";
 import { useNotification } from "@/hooks/useNotification";
 import { NextComponentType, NextPageContext } from "next";

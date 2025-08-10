@@ -1,6 +1,20 @@
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
+                    user.user_metadata?.picture ? (
+                      <Image
+                        className="h-8 w-8 rounded-full object-cover border-2 border-gray-200"
+                        src={
+                          user.user_metadata.avatar_url ||
+                          user.user_metadata.picture
+                        }
+                        alt={
+                          user.user_metadata?.full_name ||
+                          user.user_metadata?.name ||
+                          "User"
+                        }
+                        width={32}
+                        height={32}
+                      />tate, useRef, useEffect } from "react";
 import { useUser } from "@/context/UserContext";
 import { supabase } from "@/lib/supabase";
 

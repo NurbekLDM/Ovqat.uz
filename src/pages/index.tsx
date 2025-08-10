@@ -1,10 +1,13 @@
 // pages/index.tsx
 import { useState } from "react";
+import { useUser } from "@/context/UserContext";
 import IngredientInput from "@/components/IngredientInput";
 import RecipeDisplay from "@/components/RecipeDisplay";
 import { RecipeResponse } from "@/lib/gemini";
 
 export default function Home() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { user } = useUser();
   const [currentRecipe, setCurrentRecipe] = useState<RecipeResponse | null>(
     null
   );
