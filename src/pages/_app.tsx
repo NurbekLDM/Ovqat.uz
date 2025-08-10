@@ -1,11 +1,35 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { UserProvider } from "@/context/UserContext";
+import Navbar from "@/components/Navbar_new";
+import { NotificationContainer } from "@/components/Notification";
+import { useNotification } from "@/hooks/useNotification";
+
+function AppContent({
+  Component,
+  pageProps,
+}: {
+  Component: any;
+  pageProps: any;
+}) {
+  const { notifications, removeNotification } = useNotification();
+
+  return (
+    <>
+      <Navbar />
+      <Component {...pageProps} />
+      <NotificationContainer
+        notifications={notifications}
+        onClose={removeNotification}
+      />
+    </>
+  );
+}
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <UserProvider>
-      <Component {...pageProps} />
+      <AppContent Component={Component} pageProps={pageProps} />
     </UserProvider>
   );
 }

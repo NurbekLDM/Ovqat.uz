@@ -26,8 +26,14 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
+      setLoading(false);
+
+      // Google OAuth dan keyin bosh sahifaga yo'naltirish
+      if (event === "SIGNED_IN" && session?.user) {
+        window.location.href = "/";
+      }
     });
 
     return () => subscription.unsubscribe();
