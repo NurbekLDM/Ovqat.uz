@@ -1,41 +1,50 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { supabase } from "@/lib/supabase";
-import { useUser } from "@/context/UserContext";
 import Link from "next/link";
 
-export default function Login() {
+export default function Signup() {
   const router = useRouter();
-  const { user } = useUser();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (user) {
-      router.push("/"); // Login bo'lgan bo'lsa bosh sahifaga yuboriladi
-    }
-  }, [user, router]);
-
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { error } = await supabase.auth.signInWithPassword({
+
+    if (password !== confirmPassword) {
+      alert("Parollar mos kelmaydi!");
+      return;
+    }
+
+    if (password.length < 6) {
+      alert("Parol kamida 6 ta belgidan iborat bo'lishi kerak!");
+      return;
+    }
+
+    setLoading(true);
+    const { error } = await supabase.auth.signUp({
       email,
       password,
     });
+
+    setLoading(false);
+
     if (error) {
       alert("Xatolik: " + error.message);
     } else {
-      router.push("/");
+      alert("Email orqali tasdiqlash linki yuborildi!");
+      router.push("/login");
     }
   };
 
-  const handleGoogleLogin = async () => {
+  const handleGoogleSignup = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
     });
     if (error) {
-      alert("Google orqali kirishda xatolik: " + error.message);
+      alert("Google orqali ro'yxatdan o'tishda xatolik: " + error.message);
     }
   };
 
@@ -45,7 +54,7 @@ export default function Login() {
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-800 mb-2">🍽️ Ovqat.uz</h1>
           <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-            Tizimga kirish
+            Ro&apos;yxatdan o&apos;tish
           </h2>
           <p className="text-sm text-gray-600">
             AI oshpaz bilan o&apos;zbek milliy taomlarini kashf eting
@@ -55,7 +64,7 @@ export default function Login() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow-lg sm:rounded-lg sm:px-10">
-          <form onSubmit={handleLogin} className="space-y-6">
+          <form onSubmit={handleSignup} className="space-y-6">
             <div>
               <label
                 htmlFor="email"
@@ -90,12 +99,34 @@ export default function Login() {
                   id="password"
                   name="password"
                   type="password"
-                  autoComplete="current-password"
+                  autoComplete="new-password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors"
-                  placeholder="Parolingizni kiriting"
+                  placeholder="Kamida 6 ta belgi"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Parolni tasdiqlang
+              </label>
+              <div className="mt-1">
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors"
+                  placeholder="Parolni qayta kiriting"
                 />
               </div>
             </div>
@@ -103,7 +134,12 @@ export default function Login() {
             <div>
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200"
+                disabled={loading}
+                className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white transition-colors duration-200 ${
+                  loading
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                }`}
               >
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                   <svg
@@ -111,14 +147,12 @@ export default function Login() {
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
-                    <path
-                      fillRule="evenodd"
-                      d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                      clipRule="evenodd"
-                    />
+                    <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
                   </svg>
                 </span>
-                Kirish
+                {loading
+                  ? "Ro&apos;yxatdan o&apos;tkazilmoqda..."
+                  : "Ro&apos;yxatdan o&apos;tish"}
               </button>
             </div>
 
@@ -135,7 +169,7 @@ export default function Login() {
               <div className="mt-6">
                 <button
                   type="button"
-                  onClick={handleGoogleLogin}
+                  onClick={handleGoogleSignup}
                   className="w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200"
                 >
                   <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
@@ -156,7 +190,7 @@ export default function Login() {
                       d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                     />
                   </svg>
-                  Google orqali kirish
+                  Google orqali ro&apos;yxatdan o&apos;tish
                 </button>
               </div>
             </div>
@@ -165,17 +199,25 @@ export default function Login() {
           <div className="mt-6">
             <div className="text-center">
               <p className="text-sm text-gray-600">
-                Hisobingiz yo&apos;qmi?{" "}
+                Allaqachon hisobingiz bormi?{" "}
                 <Link
-                  href="/signup"
+                  href="/login"
                   className="font-medium text-green-600 hover:text-green-500 transition-colors"
                 >
-                  Ro&apos;yxatdan o&apos;tish
+                  Tizimga kirish
                 </Link>
               </p>
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Success Message */}
+      <div className="mt-8 text-center">
+        <p className="text-xs text-gray-500">
+          Ro&apos;yxatdan o&apos;tganingizdan so&apos;ng, email manzilingizga
+          tasdiqlash havolasi yuboriladi
+        </p>
       </div>
     </div>
   );
