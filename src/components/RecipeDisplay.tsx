@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { RecipeResponse } from "../lib/gemini";
 
 interface RecipeDisplayProps {
@@ -26,9 +27,9 @@ export default function RecipeDisplay({ recipe, onClose }: RecipeDisplayProps) {
         <h2 className="text-3xl font-bold text-gray-800">{recipe.title}</h2>
         <button
           onClick={onClose}
-          className="text-gray-500 hover:text-gray-700 text-xl font-bold"
+          className="text-gray-500 hover:bg-red-500 bg-red-600 px-4 p-2 hover:text-gray-700 text-xl font-bold"
         >
-          ×
+          x
         </button>
       </div>
 
@@ -58,7 +59,7 @@ export default function RecipeDisplay({ recipe, onClose }: RecipeDisplayProps) {
       </div>
 
       <div className="mb-6">
-        <h3 className="text-xl font-semibold text-gray-800 mb-3">
+        <h3 className="text-xl font-semibold text-black mb-3">
           Kerakli ingredientlar
         </h3>
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -89,6 +90,18 @@ export default function RecipeDisplay({ recipe, onClose }: RecipeDisplayProps) {
           ))}
         </ol>
       </div>
+      {recipe.image && (
+        <Image
+          alt={recipe.title}
+          className="w-full h-auto rounded-lg"
+          src={recipe.image}
+          width={800}
+          height={500}
+          layout="responsive"
+          objectFit="cover"
+          priority
+        />
+      )}
 
       {recipe.tips && recipe.tips.length > 0 && (
         <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">

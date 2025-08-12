@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 
-interface Notification {
+export interface Notification {
   id: string;
   message: string;
   type: "success" | "error" | "info" | "warning";
@@ -11,6 +11,12 @@ let notificationId = 0;
 
 export const useNotification = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
+
+  const removeNotification = useCallback((id: string) => {
+    setNotifications((prev) =>
+      prev.filter((notification) => notification.id !== id)
+    );
+  }, []);
 
   const addNotification = useCallback(
     (
@@ -23,41 +29,40 @@ export const useNotification = () => {
 
       setNotifications((prev) => [...prev, notification]);
 
+      // Auto-remove notification after duration
+      setTimeout(() => {
+        removeNotification(id);
+      }, duration);
+
       return id;
     },
-    []
+    [removeNotification]
   );
 
-  const removeNotification = useCallback((id: string) => {
-    setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id)
-    );
-  }, []);
-
   const showSuccess = useCallback(
-    (message: string) => {
-      return addNotification(message, "success");
+    (message: string, duration?: number) => {
+      return addNotification(message, "success", duration);
     },
     [addNotification]
   );
 
   const showError = useCallback(
-    (message: string) => {
-      return addNotification(message, "error");
+    (message: string, duration?: number) => {
+      return addNotification(message, "error", duration);
     },
     [addNotification]
   );
 
   const showWarning = useCallback(
-    (message: string) => {
-      return addNotification(message, "warning");
+    (message: string, duration?: number) => {
+      return addNotification(message, "warning", duration);
     },
     [addNotification]
   );
 
   const showInfo = useCallback(
-    (message: string) => {
-      return addNotification(message, "info");
+    (message: string, duration?: number) => {
+      return addNotification(message, "info", duration);
     },
     [addNotification]
   );
