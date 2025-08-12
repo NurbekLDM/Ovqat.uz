@@ -4,6 +4,7 @@
 
 export const ERROR_TYPES = {
   API_QUOTA_EXCEEDED: "API_QUOTA_EXCEEDED",
+  SERVER_OVERLOAD: "SERVER_OVERLOAD",
   NETWORK_ERROR: "NETWORK_ERROR",
   VALIDATION_ERROR: "VALIDATION_ERROR",
   UNKNOWN_ERROR: "UNKNOWN_ERROR",
@@ -12,6 +13,8 @@ export const ERROR_TYPES = {
 export const ERROR_MESSAGES = {
   [ERROR_TYPES.API_QUOTA_EXCEEDED]:
     "API kunlik limitingiz tugadi. Iltimos ertaga qayta urinib ko'ring.",
+  [ERROR_TYPES.SERVER_OVERLOAD]:
+    "Server hozir band. Iltimos bir necha daqiqadan so'ng qayta urinib ko'ring.",
   [ERROR_TYPES.NETWORK_ERROR]:
     "Internet aloqasida muammo. Iltimos qayta urinib ko'ring.",
   [ERROR_TYPES.VALIDATION_ERROR]: "Kamida bitta ingredint qo'shing",

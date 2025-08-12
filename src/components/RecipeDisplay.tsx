@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Image from "next/image";
+import React from "react";
 import { RecipeResponse } from "../lib/gemini";
 
 interface RecipeDisplayProps {
@@ -9,7 +8,6 @@ interface RecipeDisplayProps {
 
 export default function RecipeDisplay({ recipe, onClose }: RecipeDisplayProps) {
   console.log("RecipeDisplay rendered with recipe:", recipe);
-  const [imageError, setImageError] = useState(false);
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -86,36 +84,13 @@ export default function RecipeDisplay({ recipe, onClose }: RecipeDisplayProps) {
           {recipe.instructions.map((instruction, index) => (
             <li key={index} className="flex items-start">
               <span className="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-1">
-                {index + 1}
+                
               </span>
               <p className="text-gray-700 leading-relaxed">{instruction}</p>
             </li>
           ))}
         </ol>
       </div>
-      {recipe.image && !imageError && (
-        <div className="mb-6">
-          <Image
-            alt={recipe.title}
-            className="w-full h-auto rounded-lg"
-            src={recipe.image}
-            width={800}
-            height={500}
-            style={{ objectFit: "cover" }}
-            priority
-            onError={() => setImageError(true)}
-            placeholder="blur"
-            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-          />
-        </div>
-      )}
-
-      {recipe.image && imageError && (
-        <div className="mb-6 bg-gray-100 rounded-lg p-8 text-center">
-          <div className="text-gray-400 text-4xl mb-2">🍽️</div>
-          <p className="text-gray-500">Rasm yuklanmadi</p>
-        </div>
-      )}
 
       {recipe.tips && recipe.tips.length > 0 && (
         <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
