@@ -8,6 +8,7 @@ interface RecipeDisplayProps {
 }
 
 export default function RecipeDisplay({ recipe, onClose }: RecipeDisplayProps) {
+  console.log("RecipeDisplay rendered with recipe:", recipe);
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case "Oson":
@@ -91,16 +92,17 @@ export default function RecipeDisplay({ recipe, onClose }: RecipeDisplayProps) {
         </ol>
       </div>
       {recipe.image && (
-        <Image
-          alt={recipe.title}
-          className="w-full h-auto rounded-lg"
-          src={recipe.image}
-          width={800}
-          height={500}
-          layout="responsive"
-          objectFit="cover"
-          priority
-        />
+        <div className="mb-6">
+          <Image
+            alt={recipe.title}
+            className="w-full h-auto rounded-lg"
+            src={recipe.image}
+            width={800}
+            height={500}
+            style={{ objectFit: "cover" }}
+            priority
+          />
+        </div>
       )}
 
       {recipe.tips && recipe.tips.length > 0 && (
