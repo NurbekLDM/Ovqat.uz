@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { RecipeResponse } from "../lib/gemini";
 
@@ -9,6 +9,8 @@ interface RecipeDisplayProps {
 
 export default function RecipeDisplay({ recipe, onClose }: RecipeDisplayProps) {
   console.log("RecipeDisplay rendered with recipe:", recipe);
+  const [imageError, setImageError] = useState(false);
+
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case "Oson":
@@ -63,11 +65,11 @@ export default function RecipeDisplay({ recipe, onClose }: RecipeDisplayProps) {
         <h3 className="text-xl font-semibold text-black mb-3">
           Kerakli ingredientlar
         </h3>
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <ul className="grid grid-cols-1 text-black md:grid-cols-2 gap-2">
           {recipe.ingredients.map((ingredient, index) => (
             <li
               key={index}
-              className="flex items-center bg-gray-50 p-2 rounded"
+              className="flex items-center  bg-gray-50 p-2 rounded"
             >
               <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
               {ingredient}
@@ -77,7 +79,7 @@ export default function RecipeDisplay({ recipe, onClose }: RecipeDisplayProps) {
       </div>
 
       <div className="mb-6">
-        <h3 className="text-xl font-semibold text-gray-800 mb-3">
+        <h3 className="text-xl font-semibold text-black mb-3">
           Tayyorlash usuli
         </h3>
         <ol className="space-y-3">
@@ -91,7 +93,7 @@ export default function RecipeDisplay({ recipe, onClose }: RecipeDisplayProps) {
           ))}
         </ol>
       </div>
-      {recipe.image && (
+      {recipe.image && !imageError && (
         <div className="mb-6">
           <Image
             alt={recipe.title}
@@ -101,7 +103,17 @@ export default function RecipeDisplay({ recipe, onClose }: RecipeDisplayProps) {
             height={500}
             style={{ objectFit: "cover" }}
             priority
+            onError={() => setImageError(true)}
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
           />
+        </div>
+      )}
+
+      {recipe.image && imageError && (
+        <div className="mb-6 bg-gray-100 rounded-lg p-8 text-center">
+          <div className="text-gray-400 text-4xl mb-2">🍽️</div>
+          <p className="text-gray-500">Rasm yuklanmadi</p>
         </div>
       )}
 
